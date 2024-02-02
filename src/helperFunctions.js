@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
-import { TICKET_CONTRACT_ABI } from "./constant";
+import { TICKET_ABI, TICKET_CONTRACT_ABI } from "./constant";
 
-export const buyTicket = async (eventAddress) => {
+export const buyTicketFunc = async (eventAddress, uri) => {
   try {
     if (!window.ethereum) {
       console.log("Install A Wallet");
@@ -18,7 +18,7 @@ export const buyTicket = async (eventAddress) => {
     );
     const functionName = "buyPublic_Ticket";
 
-    const functionArgs = ["uri", signer.getAddress()];
+    const functionArgs = [uri, signer.getAddress()];
 
     const Transaction = await Contract[functionName](
       ...functionArgs,
@@ -31,5 +31,22 @@ export const buyTicket = async (eventAddress) => {
     console.log(txHash.transactionHash);
   } catch (error) {
     console.error("Error ", error.message);
+  }
+};
+
+export const readTicketData = async () => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+  let contract = new ethers.Contract(
+    "0xaa419382AB341C5F9cEdaa9BFcCDB836bBf64384",
+    TICKET_ABI,
+    provider
+  );
+
+  try {
+    let data = await contract.i_maxTicket();
+    console.log(Number(data));
+  } catch (error) {
+    console.log(error);
   }
 };
