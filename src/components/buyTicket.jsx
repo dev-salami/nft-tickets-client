@@ -1,13 +1,18 @@
 import { isDateInPast } from "@/utils";
 import React, { useState } from "react";
 import Loader from "./Loader";
-import { useStorageUpload } from "@thirdweb-dev/react";
+import { useAddress, useStorageUpload } from "@thirdweb-dev/react";
 import { FaTimes } from "react-icons/fa";
+import { TICKET_ABI } from "@/constant";
+import { ethers } from "ethers";
 
-function BuyTicket({ setShowBuyComponent }) {
+function BuyTicket({ setShowBuyComponent, ticketContractAddress }) {
   const { mutateAsync: upload } = useStorageUpload();
+  const userAddress = useAddress();
 
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [agreement, setAgreement] = useState(false);
@@ -29,29 +34,37 @@ function BuyTicket({ setShowBuyComponent }) {
         trait_type: "Phone Number",
         value: phone,
       },
-      {
-        trait_type: "Phone Number",
-        value: phone,
-      },
     ],
   };
-  const buyTicket = async () => {
-    // Get any data that you want to upload
 
-    // And upload the data with the upload function
-    setStatus("uploading");
+  const buyTicket = async () => {
+    // const uris = await upload({ data: [ticketDetails] });
+    // console.log(uris[0]);
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    let signer = provider.getSigner();
+    const uri = "ipfs://QmXbqMMtQXNhU1r9EQdTuu6BBgD3R3PLUW2NdAAhRsGLxw/0";
+    const buyer = userAddress;
+
+    let contract = new ethers.Contract(
+      "0x0558Af1e1F87742C3Efc525527C8792a28041a11",
+      TICKET_ABI,
+      signer
+    );
+
+    let contractWithSigner = contract.connect(signer);
+    const estimatedGas = 3e7;
     try {
-      const uris = await upload({ data: [ticketDetails] });
-      console.log(uris[0]);
-      setStatus("buying");
-      setTimeout(() => {
-        setStatus("success");
-      }, 5000);
+      setLoading(true);
+      let tx = await contract.buyPublic_Ticket(uri, buyer);
+      let receipt = await tx.wait();
+      console.log(receipt);
+      setLoading(false);
     } catch (error) {
       console.log(error);
-      setStatus("error");
     }
   };
+
   return (
     <div className="relative container mx-auto mt-20 lg:w-1/2  w-full mb-6 lg:mb-0 sm:bg-gray-900 p-6 rounded-xl">
       <FaTimes
@@ -128,9 +141,9 @@ function BuyTicket({ setShowBuyComponent }) {
           <button
             onClick={buyTicket}
             disabled={!agreement}
-            className="px-10 lg:px-4 py-2 mt-4 disabled:opacity-70  w-full   bg-green-400 rounded-md"
+            className="px-10 lg:px-4 py-2 mt-4 disabled:opacity-70  w-full   bg-green-400 rounded-md gap-4 flex justify-center"
           >
-            Buy Ticket
+            <span> Buy Ticket</span> <span>{loading && <Loader />}</span>
           </button>
         </div>
         <div>
