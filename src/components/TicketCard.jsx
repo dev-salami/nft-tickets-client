@@ -48,11 +48,11 @@ const TicketCard = ({ type, contractAddress, eventImg }) => {
         </div>
       )}
       {showBuyComponent && (
-        <div
-          // onClick={() => setShowBuyComponent(false)}
-          className="fixed bg-black/80 inset-0 w-full flex justify-center items-center"
-        >
-          <BuyTicket setShowBuyComponent={setShowBuyComponent} />
+        <div className="fixed bg-black/80 inset-0 w-full flex justify-center items-center">
+          <BuyTicket
+            setShowBuyComponent={setShowBuyComponent}
+            contractAddress={contractAddress}
+          />
         </div>
       )}
       {/* <BuyTicket /> */}
