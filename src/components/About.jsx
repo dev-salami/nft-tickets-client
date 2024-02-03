@@ -127,7 +127,11 @@ function About() {
           <hr />
         </div>
         <div className="md:w-3/5 flex justify-center">
-          <Image className="md:w-3/5 mt-8 md:mt-0" src={scanning}></Image>
+          <Image
+            alt="scanning-image"
+            className="md:w-3/5 mt-8 md:mt-0"
+            src={scanning}
+          ></Image>
         </div>
       </section>
     </div>
