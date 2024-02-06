@@ -45,7 +45,12 @@ export const readTicketData = async () => {
 
   try {
     let data = await contract.i_maxTicket();
+    let data1 = await contract.balanceOf(
+      "0x8816Fa30064cEf7E532E6597C0F4B0adAACF0401"
+    );
+
     console.log(Number(data));
+    console.log(data1);
   } catch (error) {
     console.log(error);
   }
