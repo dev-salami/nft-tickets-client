@@ -4,11 +4,11 @@ import Qrcode, {
   Html5QrcodeScanner,
   Html5QrcodeSupportedFormats,
 } from "html5-qrcode";
-import Navbar from "@/components/Navbar";
 import Header from "@/components/Header";
 import About from "@/components/About";
 import Footer from "@/components/Footer";
 import Cta from "@/components/Cta";
+import { readTicketData } from "@/helperFunctions";
 
 const QrScanner = () => {
   const [qrCodeData, setQrCodeData] = useState("");
@@ -51,6 +51,7 @@ const QrScanner = () => {
 
   return (
     <div>
+      <button onClick={() => readTicketData()}>Test</button>
       <Header />
       <About />
       <Cta />
