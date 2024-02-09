@@ -56,7 +56,9 @@ function BuyTicket({ setShowBuyComponent, ticketContractAddress }) {
     const estimatedGas = 3e7;
     try {
       setLoading(true);
-      let tx = await contract.buyPublic_Ticket(uri, buyer);
+      let tx = await contract.buyPublic_Ticket(uri, buyer, {
+        gasLimit: estimatedGas,
+      });
       let receipt = await tx.wait();
       console.log(receipt);
       setLoading(false);
@@ -73,8 +75,7 @@ function BuyTicket({ setShowBuyComponent, ticketContractAddress }) {
         size={35}
       />
 
-      {/* <button className="absolute -top-4 -right-4 z-10 bg-white w-6 h-6 rounded-full p-4 "></button> */}
-      <p className="uppercase  font-semibold mb-4 my-2">Buy Event Ticket </p>
+      <p className="uppercase  font-semibold mb-4 my-2">Buy Event Ticket</p>
       <form className="grid grid-cols-1 gap-x-4 gap-y-6 w-full md:grid-cols-2">
         <div>
           <label className="text-sm p-2" htmlFor="name">
