@@ -31,8 +31,8 @@ const TicketCard = ({ type, contractAddress, eventImg }) => {
       });
   };
   return (
-    <section className="w-full">
-      <MediaRenderer src={eventImg} />
+    <section className="w-full flex flex-col justify-center p-3 ">
+      <MediaRenderer className="w-fit mx-auto " src={eventImg} />
       <></>
       {metadata.eventName && (
         <div
@@ -60,7 +60,7 @@ const TicketCard = ({ type, contractAddress, eventImg }) => {
       {type === "purchase" ? (
         <button
           onClick={() => setShowBuyComponent(true)}
-          className="bg-green-600 w-full rounded-xl px-2 py-1 font-semibold"
+          className="bg-green-600 w-full rounded-xl px-2 py-1 font-semibold "
         >
           Buy for 0.001 MATIC
         </button>
